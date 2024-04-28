@@ -28,7 +28,6 @@ class LoginPage extends React.Component{
         super(props);
 
         this.state = {
-            nickName: '', 
             email:    '', 
             password: '',
             alert_show: false, 
@@ -39,7 +38,6 @@ class LoginPage extends React.Component{
 
     logIn = () => {
         console.log('click login');
-        const nickName = this.state.nickName;
         const email = this.state.email;
         const password = this.state.password;
         console.log(email, password);
@@ -53,7 +51,7 @@ class LoginPage extends React.Component{
                 alert_type: 'success', 
                 alert_mes: 'Login successfully!'
             });
-            this.props.loginFunc(user.uid);
+            this.props.loginFunc(user.uid, '');
         })
         .catch((error) => {
             const errorMes = error.message;
@@ -82,9 +80,7 @@ class LoginPage extends React.Component{
                 alert_mes: 'Login successfully!'
             });
             console.log(user.displayName, user.uid);
-            let userList = firebase.database().ref('userList/' + user.uid);
-            userList.set({userName: user.displayName});
-            this.props.loginFunc(user.uid);
+            this.props.loginFunc(user.uid, user.displayName);
 
         })
         .catch((error) => {

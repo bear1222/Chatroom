@@ -51,7 +51,10 @@ class Signup extends React.Component{
             return;
         }
         firebase.auth().createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
+        // .then((userCredential) => {
+            // firebase.auth().signInWithEmailAndPassword(email, password)
+        // })
+        .then(userCredential => {
             const user = userCredential.user;
             this.setState({
                 alert_show: true, 
@@ -59,13 +62,7 @@ class Signup extends React.Component{
                 alert_mes: 'Login successfully!'
             });
 
-            /*TODO:
-                add {user.uid, nickName} to database
-            */
-            let userList = firebase.database().ref('userList/' + user.uid);
-            userList.set({userName: nickName});
-
-            this.props.loginFunc(user.uid);
+            this.props.loginFunc(user.uid, nickName);
 
         })
         .catch((error) => {
