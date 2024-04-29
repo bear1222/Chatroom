@@ -2,33 +2,54 @@ import { useState } from 'react';
 import LoginPage from './loginPage';
 import SignUp from './signUp';
 import Button from 'react-bootstrap/Button';
+import {
+    withStyles,
+    Typography,
+    Divider,
+    Grid,
+    TextField,
+} from '@material-ui/core'
 
+const styles = theme => ({
 
-function LSpage(props) {
-    const [LS, setLS] = useState('login');
-    if(LS === 'login'){
-        return (
-            <div>
-                <Button onClick={() => setLS('signup')}>
-                    signup
-                </Button>
-                <LoginPage
-                    loginFunc={props.loginFunc}
-                />
-            </div>
-        )
-    }else{
-        return (
-            <div>
-                <Button onClick={() => setLS('login')}>
-                    login
-                </Button>
-                <SignUp
-                    loginFunc={props.loginFunc}
-                />
-            </div>
-        )
+});
+
+class LSpage extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            LS: 'login'
+        }
+    }
+    setLS = (str) => {
+        this.setState({LS: str});
+    }
+    render(){
+        if(this.state.LS === 'login'){
+            return (
+                <Grid container direction='row' style={{width: '100%', height: '100%'}} alignItems="center" justifyContent="center">
+                    <Grid item>
+                        <LoginPage
+                            loginFunc={this.props.loginFunc}
+                            setLS = {this.setLS}
+                        />
+                    </Grid>
+                </Grid>
+            )
+        }else{
+            return (
+                <Grid container direction='row' style={{width: '100%', height: '100%'}} alignItems="center" justifyContent="center">
+                    <Grid item>
+                        <SignUp
+                            loginFunc={this.props.loginFunc}
+                            setLS = {this.setLS}
+                        />
+                    </Grid>
+                </Grid>
+            )
+        }
+
     }
 }
 
-export default LSpage;
+export default withStyles(styles)(LSpage);

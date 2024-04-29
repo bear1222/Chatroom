@@ -17,6 +17,10 @@
     "chatList":{
       ".read": "auth != null", 
       ".write": "auth != null"
+    },
+    "emailuidList":{
+      ".read": "auth != null", 
+      ".write": "auth != null"
     }
   }
 }

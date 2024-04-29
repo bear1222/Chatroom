@@ -19,6 +19,8 @@ export class Root extends React.Component {
             CRids: [],
             chatRooms: [] 
         };
+
+        this.allowNotification();
     }
 
     getChatRooms = (uid) => {
@@ -124,21 +126,50 @@ export class Root extends React.Component {
           });
     }
 
+    allowNotification = () => {
+        if (!('Notification' in window)) {
+            console.log('This browser does not support notification');
+        }
+        if (Notification.permission === 'default' || Notification.permission === 'undefined') {
+            Notification.requestPermission(function(permission) {
+                // permission 可為「granted」（同意）、「denied」（拒絕）和「default」（未授權）
+                // 在這裡可針對使用者的授權做處理
+                console.log(permission);
+                if (permission === 'granted') {
+                    // 使用者同意授權
+                    let notifyConfig = {
+                        body: '\\ ^o^ /', // 設定內容
+                    };
+                    var notification = new Notification('Hi there!', notifyConfig); // 建立通知
+                }
+            });
+          }
+    }
+
     render() {
         console.log(this.state.userName);
         if(this.state.userName !== '')
-            return <MainPage 
-                uid = {this.state.uid}
-                userName = {this.state.userName}
-                CRids = {this.state.CRids}
-                chatRooms = {this.state.chatRooms}
-                logoutFunc = {this.logInOut}
-                addChatRoom = {this.addChatRoom}
-            />;
+            return (
+            <Grid container style={{width:'100vw', height: '100vh'}} justifyContent='center' alignItems='center'>
+                <MainPage 
+                    uid = {this.state.uid}
+                    userName = {this.state.userName}
+                    CRids = {this.state.CRids}
+                    chatRooms = {this.state.chatRooms}
+                    logoutFunc = {this.logInOut}
+                    addChatRoom = {this.addChatRoom}
+                />;
+            </Grid>
+            )
         else 
-            return <LSpage 
-                loginFunc = {this.logInOut}
-            />;
+            return (
+            <Grid style={{width:'100vw', height: '100vh'}}>
+                <LSpage 
+                    loginFunc = {this.logInOut}
+                />
+
+            </Grid>
+            )
     }
 }
 

@@ -1,4 +1,3 @@
-
 import {
     withStyles,
     Typography,

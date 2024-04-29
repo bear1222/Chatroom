@@ -4,24 +4,18 @@ import {
     Divider,
     Grid,
     TextField,
+    Button
 } from '@material-ui/core';
-import Button from 'react-bootstrap/Button';
 
 const styles = theme => ({
-
+    item:{
+        width: '100%',
+        textAlign: 'center'
+    },
+    button:{
+        width: '100%'
+    }
 });
-
-//function create_alert(type, message) {
-//    if(type == 'success'){
-//        return (<Alert severity="success">
-//            {'Success! ' + message}
-//        </Alert>);
-//    }else if(type == 'error'){
-//        return (<Alert severity="error">
-//            {'Error! ' + message}
-//        </Alert>);
-//    }
-//}
 
 class LoginPage extends React.Component{
     constructor(props){
@@ -51,11 +45,20 @@ class LoginPage extends React.Component{
                 alert_type: 'success', 
                 alert_mes: 'Login successfully!'
             });
+            const email2 = email.replaceAll('.', ',')
+            let emailuidList = firebase.database().ref('emailuidList/' + email2);
+            emailuidList.set({uid: user.uid})
+
+            let notification = new Notification('Log In Success!', {body: 'Welcome back!'});
             this.props.loginFunc(user.uid, '');
+        })
+        .then(() => {
+            console.log('add email uid success')
         })
         .catch((error) => {
             const errorMes = error.message;
             // create_alert('error', errorMes);
+            let notification = new Notification('Error!', {body: errorMes});
             this.setState({
                 alert_show: true, 
                 alert_type: 'danger', 
@@ -80,11 +83,19 @@ class LoginPage extends React.Component{
                 alert_mes: 'Login successfully!'
             });
             console.log(user.displayName, user.uid);
+            const email = user.email;
+            console.log('google email:', email);
+            const email2 = email.replaceAll('.', ',')
+            console.log(email2);
+            let emailuidList = firebase.database().ref('emailuidList/' + email2);
+            emailuidList.set({uid: user.uid})
             this.props.loginFunc(user.uid, user.displayName);
+            let notification = new Notification('Log In Success!', {body: 'Welcome back!'});
 
         })
         .catch((error) => {
             const errorMes = error.message;
+            let notification = new Notification('Error!', {body: errorMes});
             // create_alert('error', errorMes);
             this.setState({
                 alert_show: true, 
@@ -95,42 +106,55 @@ class LoginPage extends React.Component{
     }
     
     render(){
+        const {classes}= this.props;
         return (
-            <div>
-                <p>
-                    Log In Page
-                </p>
-                <TextField
-                    label = 'Email:'
-                    type = 'text'
-                    onChange={(event) => this.setState({email: event.target.value})}
-                    value = {this.state.email}
-                >
-                </TextField>
-                <br/>
-                <TextField
-                    label = 'Password:'
-                    type = 'password'
-                    onChange={(event) => this.setState({password: event.target.value})}
-                    value = {this.state.password}
-                >
-                </TextField>
-                <br/>
-                <br/>
-                <Button
-                    onClick={() => this.logIn()}
-                >
-                    {'Login'}
-                </Button>
-                <br/>
-                <Button
-                    onClick={() => this.googleLogin()}
-                >
-                    {'login with Google'}
-                </Button>
+            <Grid container direction='column' alignItems="center" justifyContent="space-between" spacing={2}>
+                <Grid item className={this.props.classes.item}>
+                    <Typography>
+                        Log In Page
+                    </Typography>
+                </Grid>
+                <Grid item className={this.props.classes.item}>
+                    <TextField
+                        label = 'Email:'
+                        type = 'text'
+                        onChange={(event) => this.setState({email: event.target.value})}
+                        value = {this.state.email}
+                    >
+                    </TextField>
+                </Grid>
+                <Grid item className={this.props.classes.item}>
+                    <TextField
+                        label = 'Password:'
+                        type = 'password'
+                        onChange={(event) => this.setState({password: event.target.value})}
+                        value = {this.state.password}
+                    >
+                    </TextField>
+                </Grid>
+                <Grid item className={this.props.classes.item}>
+                    <Button className={classes.button}
+                        onClick={() => this.logIn()}
+                    >
+                        {'Login'}
+                    </Button>
+                </Grid>
+                <Grid item className={this.props.classes.item}>
+                    <Button className={classes.button}
+                        onClick={() => this.googleLogin()}
+                    >
+                        {'login with Google'}
+                    </Button>
+                </Grid>
+                <Grid item className={this.props.classes.item}>
+                    <Button className={classes.button}
+                        onClick={() => this.props.setLS('signup')}
+                    >
+                        signup
+                    </Button>
+                </Grid>
 
-
-            </div>
+            </Grid>
         );
     }
 }

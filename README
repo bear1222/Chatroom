@@ -18,9 +18,11 @@
 | CSS Animation                                    | 2%        | Y         |
 | Security                                         | 2%        | Y         |
 
-| **Other useful functions**                         | **Score** | **Check** |
+| **Other useful functions**                       | **Score** | **Check** |
 | :----------------------------------------------- | :-------: | :-------: |
-| Name of functions                                  | 1~5%     | N         |
+| User profile                                     | 1%        | N         |
+| Profile picture                                  | 1%        | N         |
+| Unsend message                                   | 3%        | N         |
 
 
 ---

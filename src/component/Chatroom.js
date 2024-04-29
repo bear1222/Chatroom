@@ -3,7 +3,9 @@ import {
     Typography,
     Divider,
     Grid,
+    Box,
     Button,
+    IconButton
 } from '@material-ui/core'
 
 const styles = theme => ({
@@ -17,16 +19,12 @@ class Chatroom extends React.Component{
 
     render(){
         console.log('render Chatroom');
-        console.log(this.props.idx);
-        console.log(this.props.CRid)
         return (
-            <div>
-                <Button
+                <IconButton
                     onClick={() => this.props.changeRoom(this.props.idx)}
                 >
                     {'Chatroom: ' + this.props.chatroomName}
-                </Button>
-            </div>
+                </IconButton>
         );
     }
 }

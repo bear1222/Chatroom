@@ -1,16 +1,22 @@
-import Button from 'react-bootstrap/Button';
 import {
     withStyles,
     Typography,
     Divider,
     Grid,
     TextField,
+    Button
 } from '@material-ui/core';
-import Alert from 'react-bootstrap/Alert';
 
-const styles = theme => {
+const styles = theme => ({
+    item:{
+        width: '100%',
+        textAlign: 'center'
+    },
+    button:{
+        width: '100%'
+    }
 
-};
+});
 
 class Signup extends React.Component{
     constructor(props){
@@ -61,12 +67,16 @@ class Signup extends React.Component{
                 alert_type: 'success', 
                 alert_mes: 'Login successfully!'
             });
+            const email2 = email.replaceAll('.', ',')
+            let emailuidList = firebase.database().ref('emailuidList/' + email2);
+            emailuidList.set({uid: user.uid})
 
             this.props.loginFunc(user.uid, nickName);
 
         })
         .catch((error) => {
             const errMes = error.message;
+            let notification = new Notification('Error!', {body: errMes});
             console.error(errMes);
             this.setState({
                 alert_show: true, 
@@ -83,53 +93,61 @@ class Signup extends React.Component{
     }
 
     render(){
+        const {classes}= this.props;
         return (
-            <>
-                <p>
-                    Sign Up page
-                </p>
-                <TextField
-                    label = 'Nick Name:'
-                    type = 'text'
-                    onChange={(e) => this.setState({nickName: e.target.value})}
-                    value = {this.state.nickName}
-                >
-                </TextField>
-                <br/>
-                <TextField
-                    label = 'Email:'
-                    type = 'text'
-                    onChange={(e) => this.setState({email: e.target.value})}
-                    value = {this.state.email}
-                >
-                </TextField>
-                <br/>
-                <TextField
-                    label = 'Password:'
-                    type = 'password'
-                    onChange={(e) => this.setState({password: e.target.value})}
-                    value = {this.state.password}
-                >
-                </TextField>
-                <br/>
-                <TextField
-                    label = 'Password Confirm:'
-                    type = 'password'
-                    onChange={(e) => this.setState({pwdcon: e.target.value})}
-                    value = {this.state.pwdcon}
-                >
-                </TextField>
-                <br/>
-                <Button variant="primary" onClick={this.signUp}>
-                    Sign Up
-                </Button>
-                <Alert
-                    variant={this.state.alert_type}
-                    onClose={() => this.handleAlertShow(false)}
-                >
-                    {this.state.alert_mes}
-                </Alert>
-            </>
+            <Grid container direction='column' alignItems="center" justifyContent="space-between" spacing={2}>
+                <Grid item className={this.props.classes.item}>
+                    <Typography>
+                        Sign Up page
+                    </Typography>
+                </Grid>
+                <Grid item className={this.props.classes.item}>
+                    <TextField
+                        label = 'Nick Name:'
+                        type = 'text'
+                        onChange={(e) => this.setState({nickName: e.target.value})}
+                        value = {this.state.nickName}
+                    >
+                    </TextField>
+                </Grid>
+                <Grid item className={this.props.classes.item}>
+                    <TextField
+                        label = 'Email:'
+                        type = 'text'
+                        onChange={(e) => this.setState({email: e.target.value})}
+                        value = {this.state.email}
+                    >
+                    </TextField>
+                </Grid>
+                <Grid item className={this.props.classes.item}>
+                    <TextField
+                        label = 'Password:'
+                        type = 'password'
+                        onChange={(e) => this.setState({password: e.target.value})}
+                        value = {this.state.password}
+                    >
+                    </TextField>
+                </Grid>
+                <Grid item className={this.props.classes.item}>
+                    <TextField
+                        label = 'Password Confirm:'
+                        type = 'password'
+                        onChange={(e) => this.setState({pwdcon: e.target.value})}
+                        value = {this.state.pwdcon}
+                    >
+                    </TextField>
+                </Grid>
+                <Grid item className={this.props.classes.item}>
+                    <Button variant="primary" onClick={this.signUp}>
+                        Sign Up
+                    </Button>
+                </Grid>
+                <Grid item className={this.props.classes.item}>
+                    <Button onClick={() => this.props.setLS('login')}>
+                        login
+                    </Button>
+                </Grid>
+            </Grid>
         );
 
     };
