@@ -4,11 +4,11 @@ import {
     Typography,
     Divider,
     Grid,
-    TextField
+    TextField,
 } from '@material-ui/core'
-import { FilterBAndW } from '@material-ui/icons';
-import Button from 'react-bootstrap/Button';
+import Button from '@mui/material/Button';
 import Modal from 'react-bootstrap/Modal';
+import AddIcon from '@mui/icons-material/Add';
 
 const styles = theme => ({
 
@@ -84,7 +84,9 @@ class AddMembtn extends React.Component{
     render(){
         return (
             <div>
-                <Button variant="primary" onClick={this.handleShow}>
+                <Button endIcon={<AddIcon/>} color="success" variant="contained" 
+                    onClick={this.handleShow}
+                >
                     Add Member
                 </Button>
 

@@ -9,7 +9,10 @@ import {
 } from '@material-ui/core'
 
 const styles = theme => ({
-
+    chatroom:{
+        height: '100%',
+        textTransform: 'none'
+    }
 });
 
 class Chatroom extends React.Component{
@@ -20,11 +23,13 @@ class Chatroom extends React.Component{
     render(){
         console.log('render Chatroom');
         return (
-                <IconButton
-                    onClick={() => this.props.changeRoom(this.props.idx)}
+                <Button variant='outlined' fullWidth className={this.props.classes.chatroom}
+                    onClick={() => {
+                        this.props.changeRoom(this.props.idx);
+                    }}
                 >
-                    {'Chatroom: ' + this.props.chatroomName}
-                </IconButton>
+                    {this.props.chatroomName}
+                </Button>
         );
     }
 }

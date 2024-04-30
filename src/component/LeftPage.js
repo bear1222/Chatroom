@@ -11,14 +11,13 @@ import Chat from './Chat';
 import AddCRbtn from './addCRbtn';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
-import NarrowMain from './narrowMain';
+import { Margin } from '@mui/icons-material';
 
 const styles = theme => ({
     wrap:{
         width:'100%',
         height: '100vh',
-        backgroundColor: '#DBC8B6',
-        overflow: 'hidden'
+        backgroundColor: '#DBC8B6'
     },
     leftPart:{
         height: '100vh'
@@ -35,20 +34,16 @@ const styles = theme => ({
         paddingRight: '10px',
     },
     chatroomContainer:{
-        height: 'calc(100% - 80px - 50px - 0px)',
+        height: 'calc(100% - 80px - 50px - 10px)',
         width: '100%',
         overflowY: 'scroll',
         '&::-webkit-scrollbar':{display:'none'},
-        paddingLeft: '10px', 
-        paddingRight: '10px'
+        paddingLeft: '10px',
+        paddingRight: '10px',
     },
     chatroomContainer_2:{
         height: '100%',
-        width: '100%',
-        overflowY: 'scroll',
-        '&::-webkit-scrollbar':{display:'none'},
         backgroundColor: '#f0ede5',
-
     },
     chatroom:{
         width: '100%',
@@ -68,8 +63,7 @@ class MainPage extends React.Component{
         super(props);
 
         this.state = {
-            chooseRoom: 0, 
-            size: 'wide'
+            chooseRoom: 0
         }
 
 
@@ -80,27 +74,12 @@ class MainPage extends React.Component{
         this.setState({chooseRoom: id});
     }
 
-    widthChange = () => {
-        if(window.innerWidth > 1250)
-            this.setState({size: 'wide'});
-        else 
-            this.setState({size: 'narrow'});
-    }
-    componentDidMount() {
-        this.widthChange();
-        window.addEventListener('resize', this.widthChange);
-    }
-    componentWillUnmount() {
-        window.removeEventListener('resize', this.widthChange);
-    }
-
 
     render(){
         const {classes} = this.props;
         console.log('render Main Page');
         console.log('CRids:', this.props.CRids);
         return (
-            this.state.size == 'wide' ? 
             <Grid container direction="row" className={classes.wrap} justifyContent='space-evenly'>
                 <Grid item xs={3} className={classes.leftPart} container direction='column' >
                     <Grid container direction='row' justifyContent='space-between' className={classes.title} alignItems='center'>
@@ -177,16 +156,6 @@ class MainPage extends React.Component{
                     />
                 </Grid>
             </Grid>
-            :
-            <NarrowMain
-                uid = {this.props.uid}
-                userName = {this.props.userName}
-                email = {this.props.email}
-                CRids = {this.props.CRids}
-                chatRooms = {this.props.chatRooms}
-                logoutFunc = {this.props.logoutFunc}
-                addChatRoom = {this.props.addChatRoom}
-            />
         );
     }
 }

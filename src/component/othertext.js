@@ -5,9 +5,23 @@ import {
     Grid,
     Button,
 } from '@material-ui/core'
-import AddMembtn from './addMembtn';
 
 const styles = theme => ({
+    message:{
+        minWidth: '50px',
+        backgroundColor: '#ebe4de',
+        border: '2px solid #bfb8b2',
+        'border-radius': '15px',
+        paddingTop: '5px',
+        paddingBottom: '5px',
+        paddingLeft: '8px',
+        paddingRight: '8px',
+        textAlign: 'center'
+    },
+    text:{
+        fontSize: '24px',
+        color: '#94897f'
+    }
 
 });
 
@@ -20,12 +34,17 @@ class Othertext extends React.Component{
     }
 
     render(){
+        const {classes} = this.props;
         console.log('render Chattext');
         // sender, text
         return (
-            <div>
-                <p> type: {this.props.type}, sender: {this.props.sender}, mes: {this.props.mes}</p>
-            </div>
+            <Grid container direction='column' alignItems='center'>
+                <Grid item className={classes.message}>
+                    <Typography className={classes.text}>
+                        <b>{this.props.sender}</b> {this.props.mes}
+                    </Typography>
+                </Grid>
+            </Grid>
         );
     }
 }

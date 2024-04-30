@@ -3,10 +3,13 @@ import {
     Typography,
     Divider,
     Grid,
-    TextField
+    TextField,
 } from '@material-ui/core'
-import Button from 'react-bootstrap/Button';
+import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
 import Modal from 'react-bootstrap/Modal';
+import AddIcon from '@mui/icons-material/Add';
+import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 
 const styles = theme => ({
 
@@ -36,10 +39,13 @@ class AddCRbtn extends React.Component{
 
     render(){
         return (
-            <div>
-                <Button variant="primary" onClick={this.handleShow}>
-                    Add Chat Room
-                </Button>
+            <>
+                <IconButton
+                    color="success"
+                    onClick={this.handleShow}
+                >
+                    <AddCircleOutlinedIcon sx={{ fontSize: 40 }}/>
+                </IconButton>
 
                 <Modal show={this.state.modalShow} onHide={this.handleClose}>
                     <Modal.Header closeButton>
@@ -52,10 +58,10 @@ class AddCRbtn extends React.Component{
 
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={this.handleClose}>
+                        <Button  onClick={this.handleClose}>
                             Close
                         </Button>
-                        <Button variant="primary" onClick={() => {
+                        <Button onClick={() => {
                             this.addChatRoom();
                             this.handleClose();
                         }}>
@@ -63,7 +69,7 @@ class AddCRbtn extends React.Component{
                         </Button>
                     </Modal.Footer>
                 </Modal>
-            </div>
+            </>
         );
     }
 }

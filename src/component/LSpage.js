@@ -11,7 +11,9 @@ import {
 } from '@material-ui/core'
 
 const styles = theme => ({
-
+    wrap:{
+        backgroundColor: '#DABEA7'
+    }
 });
 
 class LSpage extends React.Component{
@@ -27,7 +29,7 @@ class LSpage extends React.Component{
     render(){
         if(this.state.LS === 'login'){
             return (
-                <Grid container direction='row' style={{width: '100%', height: '100%'}} alignItems="center" justifyContent="center">
+                <Grid container direction='row' style={{width: '100%', height: '100%'}} alignItems="center" justifyContent="center" className={this.props.classes.wrap}>
                     <Grid item>
                         <LoginPage
                             loginFunc={this.props.loginFunc}
@@ -38,7 +40,7 @@ class LSpage extends React.Component{
             )
         }else{
             return (
-                <Grid container direction='row' style={{width: '100%', height: '100%'}} alignItems="center" justifyContent="center">
+                <Grid container direction='row' style={{width: '100%', height: '100%'}} alignItems="center" justifyContent="center" className={this.props.classes.wrap}>
                     <Grid item>
                         <SignUp
                             loginFunc={this.props.loginFunc}

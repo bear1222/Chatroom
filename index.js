@@ -16,6 +16,7 @@ export class Root extends React.Component {
         this.state = {
             uid: '',
             userName: '',
+            userEmail: '',
             CRids: [],
             chatRooms: [] 
         };
@@ -50,7 +51,7 @@ export class Root extends React.Component {
 
     addUser= (uid, name) => {
         let userList = firebase.database().ref('userList/' + uid);
-        userList.set({userName: name})
+        userList.update({userName: name})
         .then(console.log('userList  set finish'))
         .catch(err => console.error(err));
 
@@ -68,9 +69,16 @@ export class Root extends React.Component {
         .then(console.log('add user to public success'))
         .catch(err => console.error(err))
 
+        // send addMem mes
+        const CRid = publicRoomId;
+        const newdata = {type: 'addMem', sender: uid, message: 'is added to this chatroom'};
+        firebase.database().ref('chatList/' + CRid).push(newdata)
+        .then(res => console.log('add member successfully'))
+        .catch(err => console.error('error:', err));
     }
 
-    logInOut = (uid, nickName) => {
+    logInOut = (uid, nickName, email) => {
+        this.setState({userEmail: email});
         console.log('uid: ' + uid, 'nickName: ' + nickName);
         if(uid == ''){ // logout
             this.setState({uid: '', userName: ''});
@@ -85,7 +93,7 @@ export class Root extends React.Component {
                 if(snapshot.exists()){
                     console.log('exist user');
                 }else{
-                    userList.set({userName: nickName});
+                    userList.update({userName: nickName, email: email});
                     this.addUser(uid, nickName);
                     console.log('new user');
                 }
@@ -150,17 +158,16 @@ export class Root extends React.Component {
         console.log(this.state.userName);
         if(this.state.userName !== '')
             return (
-            <Grid container style={{width:'100vw', height: '100vh'}} justifyContent='center' alignItems='center'>
                 <MainPage 
                     uid = {this.state.uid}
                     userName = {this.state.userName}
+                    email = {this.state.userEmail}
                     CRids = {this.state.CRids}
                     chatRooms = {this.state.chatRooms}
                     logoutFunc = {this.logInOut}
                     addChatRoom = {this.addChatRoom}
-                />;
-            </Grid>
-            )
+                />
+            );
         else 
             return (
             <Grid style={{width:'100vw', height: '100vh'}}>

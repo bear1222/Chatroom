@@ -6,8 +6,17 @@ import {
     TextField,
     Button
 } from '@material-ui/core';
+import { BorderAll, Height } from '@material-ui/icons';
 
 const styles = theme => ({
+    wrap:{
+        width: '400px', 
+        height: '600px',
+        border: '2px dotted gray',
+        paddingTop: '30px',
+        paddingBottom: '20px',
+        backgroundColor: '#F2E9E4'
+    },
     item:{
         width: '100%',
         textAlign: 'center'
@@ -50,7 +59,7 @@ class LoginPage extends React.Component{
             emailuidList.set({uid: user.uid})
 
             let notification = new Notification('Log In Success!', {body: 'Welcome back!'});
-            this.props.loginFunc(user.uid, '');
+            this.props.loginFunc(user.uid, '', email);
         })
         .then(() => {
             console.log('add email uid success')
@@ -89,7 +98,7 @@ class LoginPage extends React.Component{
             console.log(email2);
             let emailuidList = firebase.database().ref('emailuidList/' + email2);
             emailuidList.set({uid: user.uid})
-            this.props.loginFunc(user.uid, user.displayName);
+            this.props.loginFunc(user.uid, user.displayName, email);
             let notification = new Notification('Log In Success!', {body: 'Welcome back!'});
 
         })
@@ -108,9 +117,9 @@ class LoginPage extends React.Component{
     render(){
         const {classes}= this.props;
         return (
-            <Grid container direction='column' alignItems="center" justifyContent="space-between" spacing={2}>
+            <Grid container direction='column' alignItems="center" justifyContent="center" spacing={2} className={classes.wrap}>
                 <Grid item className={this.props.classes.item}>
-                    <Typography>
+                    <Typography variant='h4'>
                         Log In Page
                     </Typography>
                 </Grid>

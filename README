@@ -14,15 +14,15 @@
 | :----------------------------------------------- | :-------: | :-------: |
 | Using React                                      | 10%       | Y         |
 | Third-Party Sign In                              | 1%        | Y         |
-| Notification                                     | 5%        | Y         |
-| CSS Animation                                    | 2%        | Y         |
+| Notification                                     | 5%        | N         |
+| CSS Animation                                    | 2%        | N         |
 | Security                                         | 2%        | Y         |
 
 | **Other useful functions**                       | **Score** | **Check** |
 | :----------------------------------------------- | :-------: | :-------: |
 | User profile                                     | 1%        | N         |
 | Profile picture                                  | 1%        | N         |
-| Unsend message                                   | 3%        | N         |
+| Unsend message                                   | 3%        | Y         |
 
 
 ---
@@ -52,3 +52,10 @@ table th{
     width: 100%;
 }
 </style>
+
+
+## TODO
+* notification
+* fantastic css
+* profile
+* (upload image)

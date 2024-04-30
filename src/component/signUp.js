@@ -8,6 +8,14 @@ import {
 } from '@material-ui/core';
 
 const styles = theme => ({
+    wrap:{
+        width: '400px', 
+        height: '600px',
+        border: '2px dotted gray',
+        paddingTop: '30px',
+        paddingBottom: '20px',
+        backgroundColor: '#F2E9E4'
+    },
     item:{
         width: '100%',
         textAlign: 'center'
@@ -71,7 +79,7 @@ class Signup extends React.Component{
             let emailuidList = firebase.database().ref('emailuidList/' + email2);
             emailuidList.set({uid: user.uid})
 
-            this.props.loginFunc(user.uid, nickName);
+            this.props.loginFunc(user.uid, nickName, email);
 
         })
         .catch((error) => {
@@ -95,9 +103,9 @@ class Signup extends React.Component{
     render(){
         const {classes}= this.props;
         return (
-            <Grid container direction='column' alignItems="center" justifyContent="space-between" spacing={2}>
+            <Grid container direction='column' alignItems="center" justifyContent="center" spacing={2} className={classes.wrap}>
                 <Grid item className={this.props.classes.item}>
-                    <Typography>
+                    <Typography variant='h4'>
                         Sign Up page
                     </Typography>
                 </Grid>
@@ -138,7 +146,7 @@ class Signup extends React.Component{
                     </TextField>
                 </Grid>
                 <Grid item className={this.props.classes.item}>
-                    <Button variant="primary" onClick={this.signUp}>
+                    <Button onClick={this.signUp}>
                         Sign Up
                     </Button>
                 </Grid>
