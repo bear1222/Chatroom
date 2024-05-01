@@ -20,8 +20,8 @@
 
 | **Other useful functions**                       | **Score** | **Check** |
 | :----------------------------------------------- | :-------: | :-------: |
-| User profile                                     | 1%        | N         |
-| Profile picture                                  | 1%        | N         |
+| User profile                                     | 1%        | Y         |
+| Profile picture                                  | 1%        | Y         |
 | Unsend message                                   | 3%        | Y         |
 
 

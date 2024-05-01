@@ -35,7 +35,6 @@ class Sendtext extends React.Component{
 
     render(){
         const{classes} = this.props;
-        console.log('render Sendtext');
         return (
             <Grid container alignItems='flex-end' className={classes.wrap}>
 

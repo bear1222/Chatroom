@@ -32,9 +32,6 @@ class ProfileMy extends React.Component{
     }
 
     render(){
-        console.log('render profile');
-        console.log('uid:', this.props.uid);
-        console.log('username:', this.props.username);
         // sender, text
         return (
             <>

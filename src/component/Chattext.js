@@ -45,7 +45,6 @@ class Chattext extends React.Component{
 
     render(){
         const {classes} = this.props;
-        console.log('render Chattext', this.props.mes);
         // sender, text
         return (
             <Grid container direction='row' justifyContent='flex-start' spacing={1} alignItems='center' className={classes.wrap}>

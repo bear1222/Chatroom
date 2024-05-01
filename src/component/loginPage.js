@@ -15,7 +15,7 @@ const styles = theme => ({
         border: '2px dotted gray',
         paddingTop: '30px',
         paddingBottom: '20px',
-        backgroundColor: '#F2E9E4'
+        backgroundColor: '#f0ede5',
     },
     item:{
         width: '100%',

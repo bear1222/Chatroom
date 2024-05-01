@@ -12,7 +12,7 @@ import {
 
 const styles = theme => ({
     wrap:{
-        backgroundColor: '#DABEA7',
+        backgroundColor: '#DBC8B6',
     }
 });
 

@@ -116,7 +116,6 @@ class MainPage extends React.Component{
                         <Grid className={classes.chatroomContainer_2}>
                         {
                             this.props.chatRooms.map((name, idx) => {
-                                console.log('chatroom map:', idx);
                                 return (
                                 <Grid 
                                     item 
@@ -161,7 +160,6 @@ class MainPage extends React.Component{
                                         this.props.logoutFunc('');
                                     })
                                     .catch(err => {
-
                                         console.log('logout fail! ' + err);
                                     })
                                 }}

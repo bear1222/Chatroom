@@ -35,7 +35,6 @@ class Othertext extends React.Component{
 
     render(){
         const {classes} = this.props;
-        console.log('render Chattext');
         // sender, text
         return (
             <Grid container direction='column' alignItems='center'>

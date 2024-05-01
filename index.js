@@ -18,36 +18,40 @@ export class Root extends React.Component {
             userEmail: '',
             CRids: [],
             chatRooms: [], 
-            islisten: [] 
+            islisten: [], 
+            firstload: true 
         };
     }
 
-    getChatRooms = (uid) => {
-        if (uid === '') return;
+    //getChatRooms = (uid) => {
+    //    if (uid === '') return;
 
-        const userchatroomListRef = firebase.database().ref('userchatroomList/' + uid + '/chatrooms');
+    //    const userchatroomListRef = firebase.database().ref('userchatroomList/' + uid + '/chatrooms');
 
-        return userchatroomListRef.once('value')
-        .then((snapshot) => {
-            const CRids = snapshot.val() || []; // handle empty list
-            this.setState({CRids: CRids});
+    //    return userchatroomListRef.once('value')
+    //    .then((snapshot) => {
+    //        const CRids = snapshot.val() || []; // handle empty list
+    //        this.setState({CRids: CRids});
 
-            return Promise.all(
-              CRids.map((CRid) =>
-                firebase.database().ref('chatroomList/' + CRid + '/chatroomName').once('value').then((snapshot) => snapshot.val())
-              )
-            );
-        })
-        .then((chatRoomNames) => {
-            console.log('chatRooms:', chatRoomNames);
-            this.setState({chatRooms: [...chatRoomNames] });
-        })
-        .then(() => {
-            this.sendNotification();
-        })
-        .catch((error) => {
-            console.error('Error fetching chatrooms:', error);
-        });
+    //        return Promise.all(
+    //          CRids.map((CRid) =>
+    //            firebase.database().ref('chatroomList/' + CRid + '/chatroomName').once('value').then((snapshot) => snapshot.val())
+    //          )
+    //        );
+    //    })
+    //    .then((chatRoomNames) => {
+    //        console.log('chatRooms:', chatRoomNames);
+    //        this.setState({chatRooms: [...chatRoomNames] });
+    //    })
+    //    .catch((error) => {
+    //        console.error('Error fetching chatrooms:', error);
+    //    });
+    //}
+
+    CRidToCRName = (CRid) => {
+        return firebase.database().ref('chatroomList/' + CRid + '/chatroomName').once('value')
+        .then((snapshot) => snapshot.val())
+        .catch(err => console.log('error:', err));
     }
 
     addUser= (uid, name) => {
@@ -103,8 +107,7 @@ export class Root extends React.Component {
             this.setState({uid: uid, userName: nickName});
         }
         this.allowNotification();
-        this.getChatRooms(uid)
-        .catch(err => console.error('error:', err));
+        // this.getChatRooms(uid)
 
 
         firebase.auth().onAuthStateChanged(function(user) {
@@ -139,7 +142,7 @@ export class Root extends React.Component {
             });
           }).then(() => {
             console.log('====add chat room end====');
-            this.getChatRooms(uid); // Call getChatRooms after successful updates
+            // this.getChatRooms(uid); // Call getChatRooms after successful updates
           });
     }
 
@@ -167,57 +170,94 @@ export class Root extends React.Component {
 
                 // Create and show the notification
                 const notification = new Notification(notificationTitle, { body: notificationBody });
+                console.log('CRname:', CRName, 'user:', userName, 'mes:', message);
             });
 
         })
 
     }
 
-    sendNotification = () => {
-        const { uid, CRids } = this.state; // Destructure uid and CRids from state
-        // Check for Notification permission before proceeding
-        if (Notification.permission !== 'granted') {
-          console.log('Notification permission not granted.');
-          return;
-        }
-        if(uid == null || uid === ''){
-            console.log('not login');
-            return;
-        }
+    //sendNotification = () => {
+    //    const { uid, CRids } = this.state; // Destructure uid and CRids from state
+    //    // Check for Notification permission before proceeding
+    //    if (Notification.permission !== 'granted') {
+    //      console.log('Notification permission not granted.');
+    //      return;
+    //    }
+    //    if(uid == null || uid === ''){
+    //        console.log('not login');
+    //        return;
+    //    }
 
-        console.log('enter sendNotification');
-        console.log(uid, CRids);
-        // Loop through CRids and create listeners for each chatList
-        CRids.forEach((CRid) => {
-            if(!this.state.islisten.includes(CRid)){
-                console.log('new listen to ', CRid);
-                const chatListRef = firebase.database().ref('chatList/' + CRid);
-                const listener = chatListRef.on('child_added', (dataSnapshot) => {
-                    const newMessage = dataSnapshot.val(); // Get the new message data
+    //    // Loop through CRids and create listeners for each chatList
+    //    console.log('first load before loop:', this.state.firstload, CRids);
+    //    CRids.forEach((CRid) => {
+    //        if(!this.state.islisten.includes(CRid)){
+    //            this.setState(prev => ({
+    //                islisten: [...prev.islisten, CRid]
+    //            }));
+    //            console.log('new listen to ', CRid);
+    //            const chatListRef = firebase.database().ref('chatList/' + CRid);
+    //            const listener = chatListRef.on('child_added', (dataSnapshot) => {
+    //                const newMessage = dataSnapshot.val(); // Get the new message data
 
-                    // Check if the new message sender is not the current user
-                    if (newMessage.sender !== uid && newMessage.type === 'send') {
-                        this.sendNoti(newMessage.sender, CRid, newMessage.message);
-                    }
-                });
-                this.setState(prev => ({
-                    islisten: [...prev.islisten, CRid]
-                }));
+    //                // Check if the new message sender is not the current user
+    //                if (!this.state.firstload && newMessage.sender !== uid && newMessage.type === 'send') {
+    //                    console.log('newMes:', newMessage, 'CRid', CRid, 'firstload', this.state.firstload);
+    //                    this.sendNoti(newMessage.sender, CRid, newMessage.message);
+    //                }
+    //            });
+    //        }
+    //    })
+    //    this.setState({firstload: false})
+    //}
 
+    listenToCRid = (CRid, firstload) => {
+        console.log('listenToCRid', CRid, this.state.firstload);
+        const chatListRef = firebase.database().ref('chatList/' + CRid);
+        chatListRef.on('child_added', (snapshot) =>{
+            const newMessage = snapshot.val();
+            if(!firstload && newMessage.sender !== this.state.uid && newMessage.type === 'send'){
+                console.log('newMes:', newMessage, 'CRid', CRid, 'firstload', this.state.firstload);
+                this.sendNoti(newMessage.sender, CRid, newMessage.message);
             }
-        });
+        })
 
     }
 
     listenTouserchatroomList = () => {
         const userchatroomList = firebase.database().ref('userchatroomList/' + this.state.uid + '/chatrooms');
-        userchatroomList.on('child_added', snapshot => {
-            this.getChatRooms(this.state.uid);
-        })
+        return new Promise((resolve, reject) => {
+            userchatroomList.on('child_added', snapshot => {
+                console.log('snapshot val:', snapshot.val());
+                const CRid = snapshot.val();
+                this.CRidToCRName(CRid)
+                .then(CRName => {
+                    this.setState(prevState => {
+                        return {
+                        CRids: [...prevState.CRids, CRid], 
+                        chatRooms: [...prevState.chatRooms, CRName]
+                    }})
+                })
+                .then(() => {
+                    this.listenToCRid(CRid, this.state.firstload);
+                })
+                .then(() => {
+                    console.log('finish first load', this.state.CRids, this.state.chatRooms, this.state.firstload);
+                    resolve();
+                })
+                .catch(err => console.error('error', err));
+            });
+        });
     }
     componentDidUpdate(prevProps, prevState){
-        if(prevState.uid !== this.state.uid)
-            this.listenTouserchatroomList();
+        if(prevState.uid !== this.state.uid){
+            this.listenTouserchatroomList()
+            .then(() => {
+                console.log('set firstload');
+                this.setState({firstload: false})
+            });
+        }
     }
     
     render() {

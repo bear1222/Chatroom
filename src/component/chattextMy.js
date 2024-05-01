@@ -44,7 +44,6 @@ class ChattextMy extends React.Component{
     //sendMes = (type, sender, mes) => {
 
     deleteMes = (mesId, uid, CRid) => {
-        console.log('delete:', mesId, uid);
         const newData = {type: 'unSend', sender: uid, message: 'delete the message'};
         const chatList = firebase.database().ref('chatList/' + CRid + '/' + mesId);
         chatList.update(newData)
@@ -55,8 +54,6 @@ class ChattextMy extends React.Component{
 
     render(){
         const {classes} = this.props;
-        console.log('render Chattext');
-        console.log('mes:', this.props.mes, 'id:', this.props.mesId);
         // sender, text
         return (
             <Grid container direction='row' justifyContent='flex-end' className={classes.wrap} alignItems='center'>
