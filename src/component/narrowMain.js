@@ -13,12 +13,14 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import ReorderIcon from '@mui/icons-material/Reorder';
 import ClearIcon from '@mui/icons-material/Clear';
+import ProfileMy from './profileMy';
 
 const styles = theme => ({
     wrap:{
         width:'100%',
         height: '100vh',
-        backgroundColor: '#DBC8B6'
+        backgroundColor: '#DBC8B6',
+        overflow: 'hidden'
     },
     leftPart:{
         marginRight: '10px', 
@@ -28,12 +30,12 @@ const styles = theme => ({
         height: '80px'
     },
     personal:{
-        height: '50px',
+        height: '70px',
         paddingLeft: '15px',
         paddingRight: '10px',
     },
     chatroomContainer:{
-        height: 'calc(100% - 80px - 50px - 10px)',
+        height: 'calc(100% - 80px - 70px)',
         width: '100%',
         overflowY: 'scroll',
         '&::-webkit-scrollbar':{display:'none'},
@@ -117,7 +119,11 @@ class NarrowMain extends React.Component{
                         </Grid>
                         <Grid container direction='row' justifyContent='space-evenly' className={classes.personal} spacing={1} alignItems='center'>
                             <Grid item xs={2}>
-                                <AccountCircleIcon sx={{ fontSize: 40 }}/>
+                                <ProfileMy
+                                    uid = {this.props.uid}
+                                    username = {this.props.userName}
+                                    email = {this.props.email}
+                                />
                             </Grid>
                             <Grid item xs>
                                 <Typography className={classes.text}>

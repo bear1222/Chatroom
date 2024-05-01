@@ -58,7 +58,6 @@ class LoginPage extends React.Component{
             let emailuidList = firebase.database().ref('emailuidList/' + email2);
             emailuidList.set({uid: user.uid})
 
-            let notification = new Notification('Log In Success!', {body: 'Welcome back!'});
             this.props.loginFunc(user.uid, '', email);
         })
         .then(() => {
@@ -99,7 +98,6 @@ class LoginPage extends React.Component{
             let emailuidList = firebase.database().ref('emailuidList/' + email2);
             emailuidList.set({uid: user.uid})
             this.props.loginFunc(user.uid, user.displayName, email);
-            let notification = new Notification('Log In Success!', {body: 'Welcome back!'});
 
         })
         .catch((error) => {

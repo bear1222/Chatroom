@@ -15,19 +15,21 @@ import { Height } from '@material-ui/icons';
 
 const styles = theme => ({
     wrap:{
-        height: '100%',
+        height: '100vh',
         backgroundColor: '#DBC8B6',
+        overflow: 'hidden'
         
     },
     title:{
         width:'100%',
         height: '80px',
+        paddingRight: '10px'
     },
     divide:{
         width: '5px',
     },
     chatContainer:{
-        height: 'calc(100% - 80px - 50px - 0px)',
+        height: 'calc(100vh - 80px - 70px - 0px)',
         width: '100%',
         paddingRight: '10px'
     },
@@ -47,7 +49,9 @@ const styles = theme => ({
         marginRight: '10px'
     }, 
     sending:{
-        height: '50px',
+        height: '70px',
+        paddingLeft: '10px',
+        paddingRight: '10px',
     }
 
 });
@@ -75,20 +79,8 @@ class Chat extends React.Component{
 
 
     componentDidUpdate(prev){
-        console.log('pre CRid, now CRid', prev.CRid, this.props.CRid);
-        if(prev.CRid !== this.props.CRid || (this.props.CRid !== '' && this.state.allMessage.length == 0)){
-            const CRid = this.props.CRid || prev.CRid;
-            const chatListRef = firebase.database().ref('chatList/' + CRid);
-    
-            chatListRef.on('value', (snapshot) => {
-                const data = snapshot.val() || [];
-                this.processData(data)
-                .then(mes => {
-                    console.log('after process:', mes);
-                    this.setState({allMessage: [...mes]});
-                })
-                .catch(err => console.error(err));
-            });
+        if(prev.CRid !== this.props.CRid || (this.props.CRid != null && this.state.allMessage.length == 0)){
+            this.updataManual();
         }
     }
     updataManual = () => {
@@ -99,7 +91,6 @@ class Chat extends React.Component{
             const data = snapshot.val() || [];
             this.processData(data)
             .then(mes => {
-                console.log('after process:', mes);
                 this.setState({allMessage: [...mes]});
             })
             .catch(err => console.error(err));
@@ -108,6 +99,8 @@ class Chat extends React.Component{
 
     sendMes = (type, sender, mes) => {
         // type: 'send'/'addMem'/'unSend'
+        if(mes == null || mes === '')
+            return;
         const CRid = this.props.CRid;
         const newdata = {type: type, sender: sender, message: mes};
         firebase.database().ref('chatList/' + CRid).push(newdata)
@@ -117,12 +110,11 @@ class Chat extends React.Component{
 
     render(){
         const {classes} = this.props;
-        console.log('render Chat');
-        console.log(this.props.CRid);
-        console.log(this.props.roomName);
-        console.log('allMes:', this.state.allMessage);
-        if(this.state.allMessage.length === 0 && this.props.CRid != '')
+        if(this.state.allMessage.length === 0 && this.props.CRid != null){
+            console.log('CRid update manual', this.props.CRid );
             this.updataManual();
+
+        }
 
         return (
             <Grid container direction='column' className={classes.wrap} justifyContent='space-between'>
@@ -140,7 +132,6 @@ class Chat extends React.Component{
                     <Grid item className={classes.chatContainer2}>
                     {
                         this.state.allMessage.map((ele, idx) => {
-                            console.log(idx+':', ele);
                             return (
                                 ele.type === 'send' ? (ele.senderuid !== this.props.uid)? 
                                     <Chattext
@@ -161,6 +152,7 @@ class Chat extends React.Component{
                                         mesId = {ele.mesId}
                                         senderuid = {ele.senderuid}
                                         CRid = {this.props.CRid}
+                                        updateManual = {this.updataManual}
                                     />
                                 :
                                     <Othertext
@@ -178,7 +170,7 @@ class Chat extends React.Component{
                     }
                     </Grid>
                 </Grid>
-                <Grid item className={classes.sending} container alignItems='flex-end'>
+                <Grid item className={classes.sending} container alignItems='center'>
                     <Sendtext
                         sendMes = {this.sendMes}
                         uid = {this.props.uid}

@@ -13,11 +13,11 @@ const styles = theme => ({
         height: '40px',
     },
     inputArea:{
-        width: 'calc(100% - 70px)',
+        width: 'calc(100% - 80px)',
         height: '40px'
     },
     sendbtn:{
-        width: '70px',
+        width: '80px',
         height: '40px'
 
     }

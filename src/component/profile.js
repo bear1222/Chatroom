@@ -14,7 +14,7 @@ const styles = theme => ({
 
 });
 
-class Othertext extends React.Component{
+class Profile extends React.Component{
     constructor(props){
         super(props);
 
@@ -37,7 +37,6 @@ class Othertext extends React.Component{
         .then(res => {
             const email = res.val();
             this.setState({email: email});
-            console.log('uid to email:', uid, email);
         })
         .catch(err => console.error('error:', err));
 
@@ -49,9 +48,6 @@ class Othertext extends React.Component{
     }
 
     render(){
-        console.log('render profile');
-        console.log('uid:', this.props.uid);
-        console.log('username:', this.props.username);
         // sender, text
         return (
             <>
@@ -71,27 +67,24 @@ class Othertext extends React.Component{
                         email
                     */}
                     <Modal.Body>
-                        <AccountCircleIcon/>
-                        <Typography
-                        >
-                            {this.props.username}
-                        </Typography>
-                        <Typography
-                        >
-                            {this.state.email}
-                        </Typography>
+                        <Grid container direction='column' alignItems='center'>
+                            <AccountCircleIcon sx={{fontSize: 60}}/>
+                            <Typography variant='h6'
+                            >
+                                Name: {this.props.username}
+                            </Typography>
+                            <Typography variant='h6'
+                            >
+                                Email: {this.state.email}
+                            </Typography>
 
+                        </Grid>
 
                     </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={this.handleClose}>
-                            Close
-                        </Button>
-                    </Modal.Footer>
                 </Modal>
             </>
         );
     }
 }
 
-export default withStyles(styles)(Othertext);
+export default withStyles(styles)(Profile);

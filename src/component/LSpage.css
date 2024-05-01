@@ -1,0 +1,35 @@
+@keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  .wrap {
+    width: 400px;
+    height: 600px;
+    border: 2px dotted gray;
+    padding-top: 30px;
+    padding-bottom: 20px;
+    animation: none; /* Initially set animation to none */
+    background-color: '#DABEA7';
+  }
+  
+  .wrapActive {
+    animation: slideInLeft 0.5s ease-in-out; /* Assuming login is default animation */
+  }

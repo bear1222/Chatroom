@@ -68,7 +68,7 @@ class AddMembtn extends React.Component{
                 if(!alreadyIn){
                     chatrooms.push(CRid);
                     userchatroomList.update({chatrooms: chatrooms});
-                    this.props.sendMes('addMem', uid, 'added to this chatroom');
+                    this.props.sendMes('addMem', uid, 'is added to this chatroom');
                 }
             });
         })

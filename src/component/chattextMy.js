@@ -50,6 +50,7 @@ class ChattextMy extends React.Component{
         chatList.update(newData)
         .then(console.log('delete success!'))
         .catch(err => console.error('error!', err));
+        this.props.updataManual();
     }
 
     render(){

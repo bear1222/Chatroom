@@ -5,9 +5,8 @@ import {
 
 import LSpage from './src/component/LSpage';
 import MainPage from './src/component/mainPage'
-import { useLayoutEffect } from 'react';
-import { ChildCare, FiberManualRecord, SnoozeSharp } from '@material-ui/icons';
-const publicRoomId = '-NwYw8c-M4G04lC1sb4X';
+import { useEffect } from 'react';
+const publicRoomId = '-Nwn7QRE1r1Bfsu9K9ax';
 
 export class Root extends React.Component {
     constructor(props) {
@@ -18,10 +17,9 @@ export class Root extends React.Component {
             userName: '',
             userEmail: '',
             CRids: [],
-            chatRooms: [] 
+            chatRooms: [], 
+            islisten: [] 
         };
-
-        this.allowNotification();
     }
 
     getChatRooms = (uid) => {
@@ -43,6 +41,9 @@ export class Root extends React.Component {
         .then((chatRoomNames) => {
             console.log('chatRooms:', chatRoomNames);
             this.setState({chatRooms: [...chatRoomNames] });
+        })
+        .then(() => {
+            this.sendNotification();
         })
         .catch((error) => {
             console.error('Error fetching chatrooms:', error);
@@ -82,6 +83,7 @@ export class Root extends React.Component {
         console.log('uid: ' + uid, 'nickName: ' + nickName);
         if(uid == ''){ // logout
             this.setState({uid: '', userName: ''});
+            return;
         }else if(nickName == ''){ // login
             const userList = firebase.database().ref('userList/' + uid + '/userName')
             userList.once('value', (snapshot) => {
@@ -100,7 +102,10 @@ export class Root extends React.Component {
             });
             this.setState({uid: uid, userName: nickName});
         }
-        this.getChatRooms(uid);
+        this.allowNotification();
+        this.getChatRooms(uid)
+        .catch(err => console.error('error:', err));
+
 
         firebase.auth().onAuthStateChanged(function(user) {
             if (user) {
@@ -121,6 +126,10 @@ export class Root extends React.Component {
             users: [uid]
           }).then((ref) => {
             const CRid = ref.key;
+            const newdata = {type: 'addMem', sender: uid, message: 'is added to this chatroom'};
+            firebase.database().ref('chatList/' + CRid).push(newdata)
+            .then(res => console.log('send ' + mes, 'successfully'))
+            .catch(err => console.error('error:', err));
         
             // Add to userchatroomList
             return firebase.database().ref('userchatroomList/' + uid + '/chatrooms').once('value').then((snapshot) => {
@@ -135,25 +144,82 @@ export class Root extends React.Component {
     }
 
     allowNotification = () => {
+        console.log('permission ask');
         if (!('Notification' in window)) {
             console.log('This browser does not support notification');
         }
         if (Notification.permission === 'default' || Notification.permission === 'undefined') {
             Notification.requestPermission(function(permission) {
-                // permission 可為「granted」（同意）、「denied」（拒絕）和「default」（未授權）
-                // 在這裡可針對使用者的授權做處理
                 console.log(permission);
-                if (permission === 'granted') {
-                    // 使用者同意授權
-                    let notifyConfig = {
-                        body: '\\ ^o^ /', // 設定內容
-                    };
-                    var notification = new Notification('Hi there!', notifyConfig); // 建立通知
-                }
             });
           }
     }
 
+    sendNoti = (uid, CRid, message) => {
+        firebase.database().ref('userList/' + uid + '/userName').once('value')
+        .then(snapshot => {
+            const userName = snapshot.val();
+            firebase.database().ref('chatroomList/' + CRid + '/chatroomName').once('value')
+            .then(snapshot => {
+                const CRName = snapshot.val();
+                const notificationTitle = `[${CRName}] ${userName}`;
+                const notificationBody = message;
+
+                // Create and show the notification
+                const notification = new Notification(notificationTitle, { body: notificationBody });
+            });
+
+        })
+
+    }
+
+    sendNotification = () => {
+        const { uid, CRids } = this.state; // Destructure uid and CRids from state
+        // Check for Notification permission before proceeding
+        if (Notification.permission !== 'granted') {
+          console.log('Notification permission not granted.');
+          return;
+        }
+        if(uid == null || uid === ''){
+            console.log('not login');
+            return;
+        }
+
+        console.log('enter sendNotification');
+        console.log(uid, CRids);
+        // Loop through CRids and create listeners for each chatList
+        CRids.forEach((CRid) => {
+            if(!this.state.islisten.includes(CRid)){
+                console.log('new listen to ', CRid);
+                const chatListRef = firebase.database().ref('chatList/' + CRid);
+                const listener = chatListRef.on('child_added', (dataSnapshot) => {
+                    const newMessage = dataSnapshot.val(); // Get the new message data
+
+                    // Check if the new message sender is not the current user
+                    if (newMessage.sender !== uid && newMessage.type === 'send') {
+                        this.sendNoti(newMessage.sender, CRid, newMessage.message);
+                    }
+                });
+                this.setState(prev => ({
+                    islisten: [...prev.islisten, CRid]
+                }));
+
+            }
+        });
+
+    }
+
+    listenTouserchatroomList = () => {
+        const userchatroomList = firebase.database().ref('userchatroomList/' + this.state.uid + '/chatrooms');
+        userchatroomList.on('child_added', snapshot => {
+            this.getChatRooms(this.state.uid);
+        })
+    }
+    componentDidUpdate(prevProps, prevState){
+        if(prevState.uid !== this.state.uid)
+            this.listenTouserchatroomList();
+    }
+    
     render() {
         console.log(this.state.userName);
         if(this.state.userName !== '')

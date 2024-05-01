@@ -9,9 +9,9 @@ import {
 import Chatroom from './Chatroom';
 import Chat from './Chat';
 import AddCRbtn from './addCRbtn';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import NarrowMain from './narrowMain';
+import ProfileMy from './profileMy';
 
 const styles = theme => ({
     wrap:{
@@ -30,12 +30,12 @@ const styles = theme => ({
         height: '80px'
     },
     personal:{
-        height: '50px',
+        height: '70px',
         paddingLeft: '15px',
         paddingRight: '10px',
     },
     chatroomContainer:{
-        height: 'calc(100% - 80px - 50px - 0px)',
+        height: 'calc(100% - 80px - 70px - 0px)',
         width: '100%',
         overflowY: 'scroll',
         '&::-webkit-scrollbar':{display:'none'},
@@ -81,7 +81,7 @@ class MainPage extends React.Component{
     }
 
     widthChange = () => {
-        if(window.innerWidth > 1250)
+        if(window.innerWidth > 800)
             this.setState({size: 'wide'});
         else 
             this.setState({size: 'narrow'});
@@ -102,9 +102,9 @@ class MainPage extends React.Component{
         return (
             this.state.size == 'wide' ? 
             <Grid container direction="row" className={classes.wrap} justifyContent='space-evenly'>
-                <Grid item xs={3} className={classes.leftPart} container direction='column' >
+                <Grid item xs={6} sm={5} md={4} className={classes.leftPart} container direction='column' >
                     <Grid container direction='row' justifyContent='space-between' className={classes.title} alignItems='center'>
-                        <Typography variant='h2'>
+                        <Typography variant='h3'>
                             Chatroom
                         </Typography>
                         <AddCRbtn
@@ -138,7 +138,11 @@ class MainPage extends React.Component{
                     </Grid>
                     <Grid container direction='row' justifyContent='space-evenly' className={classes.personal} spacing={1} alignItems='center'>
                         <Grid item xs={2}>
-                            <AccountCircleIcon sx={{ fontSize: 40 }}/>
+                            <ProfileMy
+                                uid = {this.props.uid}
+                                username = {this.props.userName}
+                                email = {this.props.email}
+                            />
                         </Grid>
                         <Grid item xs>
                             <Typography className={classes.text}>

@@ -18,6 +18,9 @@ const styles = theme => ({
     },
     message:{
         minWidth: '50px',
+        width: 'max-content',
+        maxWidth: '200px',
+        overflowWrap: 'normal',
         backgroundColor: 'white',
         border: '2px solid #99938c',
         'border-radius': '15px',
@@ -42,7 +45,7 @@ class Chattext extends React.Component{
 
     render(){
         const {classes} = this.props;
-        console.log('render Chattext');
+        console.log('render Chattext', this.props.mes);
         // sender, text
         return (
             <Grid container direction='row' justifyContent='flex-start' spacing={1} alignItems='center' className={classes.wrap}>
