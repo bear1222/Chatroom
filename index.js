@@ -212,12 +212,12 @@ export class Root extends React.Component {
     //    this.setState({firstload: false})
     //}
 
-    listenToCRid = (CRid, firstload) => {
+    listenToCRid = (CRid) => {
         console.log('listenToCRid', CRid, this.state.firstload);
         const chatListRef = firebase.database().ref('chatList/' + CRid);
         chatListRef.on('child_added', (snapshot) =>{
             const newMessage = snapshot.val();
-            if(!firstload && newMessage.sender !== this.state.uid && newMessage.type === 'send'){
+            if(newMessage.sender !== this.state.uid && newMessage.type === 'send'){
                 console.log('newMes:', newMessage, 'CRid', CRid, 'firstload', this.state.firstload);
                 this.sendNoti(newMessage.sender, CRid, newMessage.message);
             }
@@ -226,37 +226,57 @@ export class Root extends React.Component {
     }
 
     listenTouserchatroomList = () => {
+        console.log('CRids in listenTouserchatroomList', this.state.CRids);
         const userchatroomList = firebase.database().ref('userchatroomList/' + this.state.uid + '/chatrooms');
-        return new Promise((resolve, reject) => {
-            userchatroomList.on('child_added', snapshot => {
-                console.log('snapshot val:', snapshot.val());
-                const CRid = snapshot.val();
-                this.CRidToCRName(CRid)
-                .then(CRName => {
-                    this.setState(prevState => {
-                        return {
+        userchatroomList.on('child_added', snapshot => {
+            console.log('snapshot val:', snapshot.val());
+            const CRid = snapshot.val();
+            this.CRidToCRName(CRid)
+            .then(CRName => {
+                this.setState(prevState => {
+                    return {
                         CRids: [...prevState.CRids, CRid], 
                         chatRooms: [...prevState.chatRooms, CRName]
-                    }})
+                    }
                 })
-                .then(() => {
-                    this.listenToCRid(CRid, this.state.firstload);
-                })
-                .then(() => {
-                    console.log('finish first load', this.state.CRids, this.state.chatRooms, this.state.firstload);
-                    resolve();
-                })
-                .catch(err => console.error('error', err));
-            });
+            })
+            .then(() => {
+                this.listenToCRid(CRid, false);
+            })
+            .then(() => {
+                console.log('finish first load', this.state.CRids, this.state.chatRooms, this.state.firstload);
+            })
+            .catch(err => console.error('error', err));
         });
     }
+
+    initial = () => {
+        const userchatroomList = firebase.database().ref('userchatroomList/' + this.state.uid + '/chatrooms');
+        userchatroomList.once('value')
+        .then((snapshot) => {
+            const CRids = snapshot.val() || []; // handle empty list
+            return CRids;
+        })
+        .then(CRids => {
+            this.setState({CRids: [...CRids]});
+            return CRids;
+        })
+        .then(CRids => {
+            CRids.map(CRid => {
+                this.listenToCRid(CRid);
+            })
+            
+        })
+        .then(() => console.log('finish initial', this.state.CRids, CRids))
+        .then(() => this.setState({firstload: false}))
+        .then(() => this.listenTouserchatroomList())
+        .catch(err => console.error('error:', err));
+    }
+
     componentDidUpdate(prevProps, prevState){
         if(prevState.uid !== this.state.uid){
-            this.listenTouserchatroomList()
-            .then(() => {
-                console.log('set firstload');
-                this.setState({firstload: false})
-            });
+            // this.initial();
+            this.listenTouserchatroomList();
         }
     }
     

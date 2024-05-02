@@ -7,8 +7,10 @@ import {
     TextField,
 } from '@material-ui/core'
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
 import Modal from 'react-bootstrap/Modal';
 import AddIcon from '@mui/icons-material/Add';
+import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 
 const styles = theme => ({
 
@@ -84,11 +86,20 @@ class AddMembtn extends React.Component{
     render(){
         return (
             <div>
-                <Button endIcon={<AddIcon/>} color="success" variant="contained" 
-                    onClick={this.handleShow}
-                >
-                    Add Member
-                </Button>
+                {
+                    this.props.size == 'wide' ? 
+                    <Button endIcon={<AddIcon/>} color="success" variant="contained" 
+                        onClick={this.handleShow}
+                    >
+                        Add Member
+                    </Button> : 
+                    <IconButton 
+                        color='success'
+                        onClick={this.handleShow}
+                    >
+                        <AddCircleOutlinedIcon sx={{ fontSize: 40 }}/>
+                    </IconButton>
+                }
 
                 <Modal show={this.state.modalShow} onHide={this.handleClose}>
                     <Modal.Header closeButton>

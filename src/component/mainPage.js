@@ -173,6 +173,7 @@ class MainPage extends React.Component{
                 </Grid>
                 <Grid item xs className={classes.rightPart}>
                     <Chat
+                        size='wide'
                         roomName = {this.props.chatRooms[this.state.chooseRoom]}
                         CRid = {this.props.CRids[this.state.chooseRoom]}
                         uid = {this.props.uid}

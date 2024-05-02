@@ -35,7 +35,7 @@ const styles = theme => ({
         paddingRight: '10px',
     },
     chatroomContainer:{
-        height: 'calc(100% - 80px - 70px)',
+        height: 'calc(100vh - 80px - 70px)',
         width: '100%',
         overflowY: 'scroll',
         '&::-webkit-scrollbar':{display:'none'},
@@ -85,7 +85,7 @@ class NarrowMain extends React.Component{
                 <Grid container className={classes.wrap} direction='row'>
                     <Grid item xs className={classes.leftPart} container direction='column' >
                         <Grid container direction='row' justifyContent='space-between' className={classes.title} alignItems='center'>
-                            <Typography variant='h2'>
+                            <Typography variant='h3'>
                                 Chatroom
                             </Typography>
                             <AddCRbtn
@@ -166,6 +166,7 @@ class NarrowMain extends React.Component{
                     </Grid>
                     <Grid item xs>
                         <Chat
+                            size = 'narrow'
                             roomName = {this.props.chatRooms[this.state.chooseRoom]}
                             CRid = {this.props.CRids[this.state.chooseRoom]}
                             uid = {this.props.uid}

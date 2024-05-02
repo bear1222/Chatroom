@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import LoginPage from './loginPage';
 import SignUp from './signUp';
 import Button from 'react-bootstrap/Button';
@@ -11,10 +10,21 @@ import {
 } from '@material-ui/core'
 
 const styles = theme => ({
-    wrap:{
+    wrap: {
         backgroundColor: '#DBC8B6',
+        width: '400px', 
+        height: '600px',
+        overflow: 'hidden'
+//        transition: 'transform 0.5s ease-in-out',
+//        transform: 'translateX(0)', // Initial position
+    },
+    containers:{
+        width: '200%',
+        height: '100%'
     }
+
 });
+
 
 class LSpage extends React.Component{
     constructor(props){
@@ -24,62 +34,47 @@ class LSpage extends React.Component{
         }
     }
 
-    //setLS = (str) => {
-    //    this.setState({ LS: str }, () => {
-    //      const animationName = str === 'login' ? 'slideInLeft' : 'slideInRight';
-    //      const wrapElement = document.querySelector('.wrap');
-    //      if (wrapElement) {
-    //        wrapElement.classList.remove(styles.wrapActive); // Remove any previous class (optional)
-    //        wrapElement.style.animation = `${animationName} 0.5s ease-in-out`;
-    //      }
-    //    });
-    //};
-
     setLS = (str) => {
         this.setState({LS: str});
     }
-//    setLS = (str) => {
-//        this.setState({ LS: str }, () => {
-//            const animationName = str === 'login' ? 'slideInLeft' : 'slideInRight';
-//            const wrapElement = document.querySelector('.wrap'); // Access element using querySelector
-//            if (wrapElement) { // Check if element exists before manipulation
-//              wrapElement.classList.remove(styles.wrapActive); // Remove previous animation class
-//              wrapElement.classList.add(styles.wrapActive); // Add animation class (defined in CSS)
-//              wrapElement.style.animation = `${animationName} 0.5s ease-in-out`;
-//            }
-//          });
-//
-////        this.setState({ LS: str }, () => {
-////            const animationName = str === 'login' ? 'slideInLeft' : 'slideInRight';
-////            this.props.classes.wrap.classList.remove(styles.wrapActive); // Remove previous animation class
-////            this.props.classes.wrap.classList.add(styles.wrapActive); // Add animation class (defined in CSS)
-////            this.props.classes.wrap.style.animation = `${animationName} 0.5s ease-in-out`;
-////          });
-////        };
-//    }
+
     render(){
+        const {classes} = this.props;
+        const LS = this.state.LS;
+        console.log('LS: ', LS);
         return (
             <Grid 
                 container 
                 direction='row' 
-                style={{width: '100%', height: '100%'}} 
+                style={{width: '100vw', height: '100vh', overflow: 'hidden', backgroundColor: '#DBC8B6'}} 
                 alignItems="center" 
                 justifyContent="center" 
-                className={this.props.classes.wrap}
+                // className={`${this.props.classes.wrap} ${classes.wrapSlideLeft}`}
+                // className={`${classes.wrap} ${this.state.LS === 'login' ? '' : classes.wrapSlideLeft}`}
             >
-                <Grid item>
-                    {this.state.LS === 'login' ? 
-                    <LoginPage
-                        loginFunc={this.props.loginFunc}
-                        setLS = {this.setLS}
-                    />
-                    : 
-                    <SignUp
-                        loginFunc={this.props.loginFunc}
-                        setLS = {this.setLS}
-                    />
-                    }
+
+                {
+                    LS === 'login'?
+                        <LoginPage
+                            LS = {this.props.LS}
+                            loginFunc={this.props.loginFunc}
+                            setLS = {this.setLS}
+                        />
+                    :
+                        <SignUp
+                            LS = {this.props.LS}
+                            loginFunc={this.props.loginFunc}
+                            setLS = {this.setLS}
+                        />
+
+                }
+
+{/*
+                <Grid item
+                    className={`${classes.wrap} ${LS === 'login' ? classes.goback : classes.wrapSlideLeft} `}
+                >
                 </Grid>
+        */}
             </Grid>
         )
     }

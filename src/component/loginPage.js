@@ -7,24 +7,8 @@ import {
     Button
 } from '@material-ui/core';
 import { BorderAll, Height } from '@material-ui/icons';
-
-const styles = theme => ({
-    wrap:{
-        width: '400px', 
-        height: '600px',
-        border: '2px dotted gray',
-        paddingTop: '30px',
-        paddingBottom: '20px',
-        backgroundColor: '#f0ede5',
-    },
-    item:{
-        width: '100%',
-        textAlign: 'center'
-    },
-    button:{
-        width: '100%'
-    }
-});
+import { Login } from '@mui/icons-material';
+// import styles from './borderAni.css';
 
 class LoginPage extends React.Component{
     constructor(props){
@@ -115,13 +99,15 @@ class LoginPage extends React.Component{
     render(){
         const {classes}= this.props;
         return (
-            <Grid container direction='column' alignItems="center" justifyContent="center" spacing={2} className={classes.wrap}>
-                <Grid item className={this.props.classes.item}>
+            <Grid container direction='column' alignItems="center" justifyContent="center" spacing={2} 
+                className='wrap'
+            >
+                <Grid item className='item'>
                     <Typography variant='h4'>
                         Log In Page
                     </Typography>
                 </Grid>
-                <Grid item className={this.props.classes.item}>
+                <Grid item className='item'>
                     <TextField
                         label = 'Email:'
                         type = 'text'
@@ -130,7 +116,7 @@ class LoginPage extends React.Component{
                     >
                     </TextField>
                 </Grid>
-                <Grid item className={this.props.classes.item}>
+                <Grid item className='item'>
                     <TextField
                         label = 'Password:'
                         type = 'password'
@@ -139,22 +125,22 @@ class LoginPage extends React.Component{
                     >
                     </TextField>
                 </Grid>
-                <Grid item className={this.props.classes.item}>
-                    <Button className={classes.button}
+                <Grid item className='item'>
+                    <Button 
                         onClick={() => this.logIn()}
                     >
                         {'Login'}
                     </Button>
                 </Grid>
-                <Grid item className={this.props.classes.item}>
-                    <Button className={classes.button}
+                <Grid item className='item'>
+                    <Button
                         onClick={() => this.googleLogin()}
                     >
                         {'login with Google'}
                     </Button>
                 </Grid>
-                <Grid item className={this.props.classes.item}>
-                    <Button className={classes.button}
+                <Grid item className='item'>
+                    <Button 
                         onClick={() => this.props.setLS('signup')}
                     >
                         signup
@@ -162,8 +148,9 @@ class LoginPage extends React.Component{
                 </Grid>
 
             </Grid>
+
         );
     }
 }
 
-export default withStyles(styles)(LoginPage);
+export default LoginPage;

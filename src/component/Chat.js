@@ -123,6 +123,7 @@ class Chat extends React.Component{
                         {this.props.roomName}
                     </Typography>
                     <AddMembtn
+                        size = {this.props.size}
                         CRid = {this.props.CRid}
                         sendMes = {this.sendMes}
                     />

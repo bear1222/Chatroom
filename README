@@ -15,7 +15,7 @@
 | Using React                                      | 10%       | Y         |
 | Third-Party Sign In                              | 1%        | Y         |
 | Notification                                     | 5%        | Y         |
-| CSS Animation                                    | 2%        | N         |
+| CSS Animation                                    | 2%        | Y         |
 | Security                                         | 2%        | Y         |
 
 | **Other useful functions**                       | **Score** | **Check** |
@@ -33,15 +33,48 @@
 
 ### How to use 
 
-- Describe how to use your web and maybe insert images or gifs to help you explain.
+- log in page
+    ![Alt text](image.png)
+enter email and password and click login button to login
+or use the second button to login with google
+or click signup to enter info to sign up
+
+- sign up page
+    ![Alt text](image-1.png)
+    enter above info and click sign up button to sign up
+
+- Main page
+  ![Alt text](image-3.png)
+    * 在左半邊選擇聊天室，右半邊會顯示該聊天室內的聊天內容
+    * 左半邊上面的![Alt text](image-4.png)按鈕可新增聊天室
+    * 左下方有使用者個人資料，右邊有登出按鈕，使用者頭貼按下後會顯示下面的profile![Alt text](image-6.png)
+    * 畫面右半邊上方有聊天室名稱，右邊按鈕![Alt text](image-5.png)可新增成員進該聊天室
+    * 中間是聊天室內的對話，其中的左邊是其他人傳的訊息，右邊是自己傳的訊息
+    * 其他人傳送的訊息左邊有使用者頭像，按下後顯示下方profile
+    * 在自己訊息的左邊有垃圾桶![Alt text](image-8.png)，按下即可收回訊息
+    * 下方輸入訊息後按下右邊send即可傳送訊息
+
+- profile
+  ![Alt text](image-7.png)
+
+- RWD
+  ![Alt text](image-9.png)
+  左邊按鈕按下後顯示選擇聊天室的選單
+  ![Alt text](image-10.png)
+  (除新增成員的按鈕圖案變得與新增聊天室相同外，按鈕效果皆與上方相同)
+
+
+
+
 
 ### Function description
 
-- Describe your bonus function and how to use it.
+- User profile ＋ Profile picture
+  畫面中的頭像按下後會顯示該使用者的profile
 
 ### Firebase page link
 
-- Your web page `URL`
+* https://chatroom-e337c.web.app
 
 ### Others (Optional)
 
@@ -53,9 +86,3 @@ table th{
 }
 </style>
 
-
-## TODO
-* notification
-* fantastic css
-* profile
-* (upload image)

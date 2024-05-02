@@ -6,25 +6,8 @@ import {
     TextField,
     Button
 } from '@material-ui/core';
+import styles from './borderAni.css';
 
-const styles = theme => ({
-    wrap:{
-        width: '400px', 
-        height: '600px',
-        border: '2px dotted gray',
-        paddingTop: '30px',
-        paddingBottom: '20px',
-        backgroundColor: '#f0ede5',
-    },
-    item:{
-        width: '100%',
-        textAlign: 'center'
-    },
-    button:{
-        width: '100%'
-    }
-
-});
 
 class Signup extends React.Component{
     constructor(props){
@@ -101,15 +84,15 @@ class Signup extends React.Component{
     }
 
     render(){
-        const {classes}= this.props;
         return (
-            <Grid container direction='column' alignItems="center" justifyContent="center" spacing={2} className={classes.wrap}>
-                <Grid item className={this.props.classes.item}>
+
+            <Grid container direction='column' alignItems="center" justifyContent="center" spacing={2} className='wrap'>
+                <Grid item className='item'>
                     <Typography variant='h4'>
                         Sign Up page
                     </Typography>
                 </Grid>
-                <Grid item className={this.props.classes.item}>
+                <Grid item className='item'>
                     <TextField
                         label = 'Nick Name:'
                         type = 'text'
@@ -118,7 +101,7 @@ class Signup extends React.Component{
                     >
                     </TextField>
                 </Grid>
-                <Grid item className={this.props.classes.item}>
+                <Grid item className='item'>
                     <TextField
                         label = 'Email:'
                         type = 'text'
@@ -127,7 +110,7 @@ class Signup extends React.Component{
                     >
                     </TextField>
                 </Grid>
-                <Grid item className={this.props.classes.item}>
+                <Grid item className='item'>
                     <TextField
                         label = 'Password:'
                         type = 'password'
@@ -136,7 +119,7 @@ class Signup extends React.Component{
                     >
                     </TextField>
                 </Grid>
-                <Grid item className={this.props.classes.item}>
+                <Grid item className='item'>
                     <TextField
                         label = 'Password Confirm:'
                         type = 'password'
@@ -145,12 +128,12 @@ class Signup extends React.Component{
                     >
                     </TextField>
                 </Grid>
-                <Grid item className={this.props.classes.item}>
+                <Grid item className='item'>
                     <Button onClick={this.signUp}>
                         Sign Up
                     </Button>
                 </Grid>
-                <Grid item className={this.props.classes.item}>
+                <Grid item className='item'>
                     <Button onClick={() => this.props.setLS('login')}>
                         login
                     </Button>
@@ -161,4 +144,5 @@ class Signup extends React.Component{
     };
 }
 
-export default withStyles(styles)(Signup);
+// export default withStyles(styles)(Signup);
+export default Signup;
